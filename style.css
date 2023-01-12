@@ -1,0 +1,200 @@
+*,:before,:after {
+    margin: 0;
+    padding:0 ;
+    box-sizing: border-box;
+    list-style: none;
+}
+body {
+    background-color: #E5E5E5;
+    min-height: 100vh;
+    font-family: 'Lato',sans-serif;
+}
+header {
+margin: 10px;
+}
+
+header .logo-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+header .logo-section img {
+    width: 500px;
+}
+
+header .search-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: #E7E7E7; */
+    background-color: #b2b0b0;
+    height: 40px;
+    width: 1240px;
+    padding:  0 40px;
+    border-radius: 5px;
+    margin: 20px auto;
+
+}
+
+header .search-input input {
+    border: none;
+    background-color: #b2b0b0;
+    width: 80%;
+    height: inherit;
+    outline: 0;
+    font-family: 'Lato' ,sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+    opacity: 0.25;
+}
+
+header .search-tags {
+    display: flex;
+    flex-direction: column;
+    width: 1240px;
+    margin: 0 auto;
+}
+
+header .search-tags #tagsline {
+    display: flex;
+    margin: 10px 0;
+    width: 100%;
+}
+
+header .search-tags #tagsline .filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 5px;
+    width: 80px;
+    height: 30px;
+    background-color: #3282F7;
+    font-family: 'Lato',sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+header .search-tags .search-input-content {
+    display: flex;
+    gap: 20px;
+    height: 40px;
+}
+
+header .search-tags .search-input-content div {
+    width: 200px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+header .search-tags .search-input-content div input {
+    width: 80%;
+    height: inherit;
+    outline: 0;
+    font-family: 'Lato' ,sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    background-color: inherit;
+    border: navajowhite;
+}
+
+header .search-tags .search-input-content div input::placeholder {
+    color: #FFFFFF;
+    opacity: 1;
+}
+
+header .search-tags .search-input-content .Composante {
+    background-color: #3282F7;
+}
+header .search-tags .search-input-content .Devices {
+    background: #68D9A4;
+}
+
+header .search-tags .search-input-content .Utensils {
+    background: #ED6454;
+}
+
+#recipes-container {
+    max-width: 1240px;
+    margin: 20px auto;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#recipes-container article {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 95%;
+    height: 350px;
+    background-color: #b2b0b0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#recipes-container article .img {
+    background-color: #C7BEBE;
+    height: 150px;
+}
+
+#recipes-container article .desc {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+}
+
+#recipes-container article .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#recipes-container article .header span {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+#recipes-container article .main-content {
+    display: flex;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 100%;
+    gap: 10px;
+}
+
+#recipes-container article .main-content ul {
+    width: 50%;
+}
+
+#recipes-container article .main-content p  {
+    width: 50%;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
