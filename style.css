@@ -5,7 +5,7 @@
     list-style: none;
 }
 body {
-    background-color: #E5E5E5;
+    /* background-color: #E5E5E5; */
     min-height: 100vh;
     font-family: 'Lato',sans-serif;
 }
@@ -27,8 +27,8 @@ header .search-input {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: #E7E7E7; */
-    background-color: #b2b0b0;
+    background-color: #E7E7E7;
+    /* background-color: #b2b0b0; */
     height: 40px;
     width: 1240px;
     padding:  0 40px;
@@ -39,7 +39,8 @@ header .search-input {
 
 header .search-input input {
     border: none;
-    background-color: #b2b0b0;
+    /* background-color: #b2b0b0; */
+    background-color: #E7E7E7;
     width: 80%;
     height: inherit;
     outline: 0;
@@ -85,7 +86,7 @@ header .search-tags #tagsline .filters {
 
 header .search-tags .search-input-content {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     height: 40px;
 }
 
@@ -94,9 +95,10 @@ header .search-tags .search-input-content div {
     border-radius: 5px;
     cursor: pointer;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     color: #FFFFFF;
+    padding: 25px;
 }
 
 header .search-tags .search-input-content div input {
@@ -111,11 +113,17 @@ header .search-tags .search-input-content div input {
     color: #FFFFFF;
     background-color: inherit;
     border: navajowhite;
+    text-align: start;
+    cursor: pointer;
 }
 
 header .search-tags .search-input-content div input::placeholder {
     color: #FFFFFF;
     opacity: 1;
+}
+
+header .search-tags .search-input-content div.active {
+    width: 90%;
 }
 
 header .search-tags .search-input-content .Composante {
@@ -135,6 +143,7 @@ header .search-tags .search-input-content .Utensils {
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr 1fr 1fr;
+    padding-top: 30px;
 }
 
 #recipes-container article {
@@ -143,9 +152,10 @@ header .search-tags .search-input-content .Utensils {
     margin: 0 auto;
     width: 95%;
     height: 350px;
-    background-color: #b2b0b0;
+    background-color: #E7E7E7;
     border-radius: 5px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 #recipes-container article .img {

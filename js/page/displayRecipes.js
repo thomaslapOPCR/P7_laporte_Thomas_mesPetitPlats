@@ -1,53 +1,39 @@
-export const recipesDisplay = (data)=>{
+export const recipesDisplay = (data) => {
+    const { id, name, time, description, ingredients = [] } = data;
 
-    const {id,name,time,description} = data
+    const ingredientsList = ingredients.map(({ ingredient, quantity = '', unit = '' }) => {
+        return `<li>${ingredient} ${quantity} ${unit}</li>`;
+    });
 
+    const article = document.createElement('article');
+    article.setAttribute('class', 'card');
+    article.setAttribute('data-index', id);
 
-    function setIngredients(ingredients = data.ingredients) {
-        const ingredientsList = document.createElement('ul');
-        ingredients.forEach(ingredient => {
-            const ingredientItem = document.createElement('li');
-            console.log(ingredient)
-            ingredientItem.innerHTML = `
-           ${ingredient.ingredient} ${ingredient.quantity || ' '} ${ingredient.unit || ' '}
-        `;
-            ingredientsList.appendChild(ingredientItem);
-        });
-        return ingredientsList;
-    }
-    function DataRecipes() {
-        const ingredientsList = setIngredients();
-        const article = document.createElement('article')
-        article.setAttribute('class','card');
-        article.setAttribute('data-index',id)
-
-        article.innerHTML = `
-	        <div class="img"></div>
-	        <div class="desc">
-	            <div class="header">
-	                <p class="title">${name}</p>
-                    <span>
+    article.innerHTML = `
+        <div class="img"></div>
+        <div class="desc">
+            <div class="header">
+                <p class="title">${name}</p>
+                <span>
                     <i class="fal fa-clock"></i>
                     <p class="time">${time} mins</p>
-                    </span>
-	            </div>
-                <div class="main-content">
-                    ${ingredientsList.outerHTML}
-                    <p class="desc-recipes">${description}</p>
-	            </div>
-	        </div>`;
+                </span>
+            </div>
+            <div class="main-content">
+                <ul>${ingredientsList.join('')}</ul>
+                <p class="desc-recipes">${description}</p>
+            </div>
+        </div>`;
 
-        return (article);
-        }
-    return {DataRecipes};
-}
+    return {
+        DataRecipes: () => article
+    };
+};
 
-export function iterateDatas(data){
+export function iterateDatas(data) {
     const container = document.querySelector('#recipes-container');
     data.forEach((data) => {
         const model = recipesDisplay(data);
         container.appendChild(model.DataRecipes());
     });
 }
-
-
