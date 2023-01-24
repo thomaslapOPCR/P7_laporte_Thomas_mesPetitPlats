@@ -14,10 +14,10 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-unused-vars": "off",
+    "no-unused-vars": "warn",
     "no-console": "warn",
     "max-len": "warn",
-    "import/extensions": "warn",
+    "import/extensions": "off",
     "eqeqeq": ["warn","always"]
   }
 

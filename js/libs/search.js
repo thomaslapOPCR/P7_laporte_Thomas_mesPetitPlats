@@ -1,35 +1,28 @@
-import * as Display from './display.js';
+/**
+ * fonction qui gere le tri sur la page
+ * @param recipes
+ * @param value
+ * @return []
+ */
 
-export function sort(recipes) {
-  const searchInput = document.querySelector('#searchInput');
-
-  searchInput.addEventListener('input', (event) => {
-    if (searchInput.value.length < 3) {
-      Display.postRecipes(recipes);
-      return;
-    }
-
-    const searchRecipes = (recipes, search) => {
-      return recipes.filter(recipe => {
-        // return (
-        //     recipe.name.toLowerCase().includes(search.toLowerCase())
-        console.log(recipe.ingredients.map(ingredient =>
-            ingredient.ingredient.toLowerCase().includes(search.toLowerCase()))
-        )
-            // recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        recipe.ingredients.some(ingredient =>
-            ingredient.ingredient.toLowerCase().includes(search.toLowerCase()))
-        
-        // )
-      });
-    }
-   
-    const results = searchRecipes(recipes, searchInput.value);
-    console.log(results)
-    Display.postRecipes(results);
-
-    if (results.length === 0) Display.noResult('Aucune recettes ne correspond...');
-  });
+export function filterRecipes(recipes, value) {
+  return value.length < 3 ? recipes : recipes.filter((recipe) => (
+    recipe.name.toLowerCase().includes(value.toLowerCase().trim())
+            || recipe.description.toLowerCase().includes(value.toLowerCase().trim())
+            || recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(value.toLowerCase().trim()))
+  ));
 }
 
-export default { sort };
+export function filterWithTags(recipes, tags) {
+    if (!tags || tags.length === 0) return recipes;
+    const lowerCaseTags = tags.map(tag => tag.toLowerCase().trim());
+    return recipes.filter(recipe => {
+        return (
+            lowerCaseTags.every(tag => (recipe.appliance && recipe.appliance.toLowerCase().includes(tag)) ||
+                (recipe.ingredients && recipe.ingredients.some(ingredient => ingredient.ingredient && ingredient.ingredient.toLowerCase().includes(tag))) ||
+                (recipe.ustensils && recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tag)))
+            ));
+    });
+}
+
+export default { filterRecipes, filterWithTags };

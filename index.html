@@ -4,20 +4,18 @@
 	<title>Les petits plats</title>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="IE=edge">
-	<meta
-			name="viewport"
-			content="width=device-width, maximum-scale=1">
+	<link rel="icon" href="asset/logo-les-petits-plats.svg" type="image/png" sizes="32x32" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1">
 	<link rel="stylesheet" href="style.css">
 	<link crossorigin="anonymous" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
 	      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" rel="stylesheet"/>
-<!-- 	<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"> -->
 	<script type="module" src="js/page/index.js" defer></script>
-	
 </head>
 <body>
 <header>
 	<section class="logo-section">
-		<img src="asset/logo.png" alt="logo LesPetitsPlats">
+		<img src="asset/logo-les-petits-plats.svg" alt="logo LesPetitsPlats">
+		<p>Les Petits Plats</p>
 	</section>
 	
 	<section class="search-input">
@@ -27,24 +25,24 @@
 	
 	<section class="search-tags">
 		<div id="tagsline">
-			<div class="filters" data-color="">
-				<p>Coco</p>
-				<i class="fal fa-times-circle"></i>
-			</div>
+
 		</div>
 		<div class="search-input-content">
-			<div class="Composante">
-				<input type="text" value="" data-id="Composante" placeholder="Ingrédients">
+			<div class="Composante" id="ingrédients" data-color="#3282F7">
+				<input type="text" placeholder="Ingrédients">
+				<ul class="ingredients" data-filter="ingredients"></ul>
 				<i class="fas fa-angle-down"></i>
 			</div>
 			
-			<div class="Devices">
-				<input type="text" value="" data-id="Devices" placeholder="Appareils">
+			<div class="Devices" id="appareils" data-color="#68D9A4">
+				<input type="text" placeholder="Appareils">
+				<ul class="appareils" data-filter="appliance"></ul>
 				<i class="fas fa-angle-down"></i>
 			</div>
 			
-			<div class="Utensils">
-				<input type="text" value="" data-id="Ustensiles" placeholder="Ustensiles">
+			<div class="Utensils" id="ustensiles" data-color="#ED6454">
+				<input type="text" placeholder="Ustensiles">
+				<ul class="ustensiles" data-filter="ustensils"></ul>
 				<i class="fas fa-angle-down"></i>
 			</div>
 		</div>
@@ -55,3 +53,5 @@
 
 </body>
 </html>
+
+<!-- onclick="this.stopPropagation(); this.classList.toggle('active'); this.children[0].focus();" -->
