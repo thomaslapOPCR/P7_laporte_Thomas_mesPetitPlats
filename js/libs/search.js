@@ -4,8 +4,8 @@
  * @param value
  * @return []
  */
-
 export function filterRecipes(recipes, value) {
+
   return value.length < 3 ? recipes : recipes.filter((recipe) => (
     recipe.name.toLowerCase().includes(value.toLowerCase().trim())
             || recipe.description.toLowerCase().includes(value.toLowerCase().trim())
@@ -16,6 +16,7 @@ export function filterRecipes(recipes, value) {
 export function filterWithTags(recipes, tags) {
     if (!tags || tags.length === 0) return recipes;
     const lowerCaseTags = tags.map(tag => tag.toLowerCase().trim());
+    
     return recipes.filter(recipe => {
         return (
             lowerCaseTags.every(tag => (recipe.appliance && recipe.appliance.toLowerCase().includes(tag)) ||

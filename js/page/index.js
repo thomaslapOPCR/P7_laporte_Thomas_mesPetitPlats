@@ -14,16 +14,29 @@ function init() {
 
   const filterTags = [];
     let filteredRecipes;
+    let recipesFilteredWithTags;
+    
     filteredRecipes = Search.filterRecipes(recipes, searchInput.value);
     Display.fillFilter(filteredRecipes);
     Display.displayRecipes(filteredRecipes);
-  
-  searchInput.addEventListener('input', () => {
-    filteredRecipes = Search.filterRecipes(filteredRecipes, searchInput.value)
-    Display.fillFilter(filteredRecipes);
-    Display.displayRecipes(filteredRecipes);
-  });
 
+    
+  searchInput.addEventListener('input', () => {
+
+    if(filterTags.length > 0 && searchInput.value.length >= 3) {
+      let filteredRecipesWithTagAndInput = Search.filterRecipes( Search.filterWithTags(recipes,filterTags), searchInput.value);
+      Display.fillFilter(filteredRecipesWithTagAndInput);
+      Display.displayRecipes(filteredRecipesWithTagAndInput);
+    } else if(filterTags.length > 0 && searchInput.value.length < 3) {
+      let filteredRecipesWithTag = Search.filterWithTags(recipes,filterTags);
+      Display.fillFilter(filteredRecipesWithTag);
+      Display.displayRecipes(filteredRecipesWithTag);
+    } else {
+      filteredRecipes = Search.filterRecipes(recipes, searchInput.value)
+      Display.fillFilter(filteredRecipes);
+      Display.displayRecipes(filteredRecipes);
+    }
+  });
 
 
   searchInputContent.querySelectorAll('div').forEach((div) => {
@@ -39,10 +52,11 @@ function init() {
       const color = e.target.parentElement.parentElement.dataset.color;
       filterTags.push(e.target.textContent.toLowerCase());
 
-      filteredRecipes = Search.filterWithTags(filteredRecipes,filterTags);
-      Display.fillFilter(filteredRecipes);
-      Display.displayRecipes(filteredRecipes);
+      recipesFilteredWithTags = Search.filterWithTags(filteredRecipes,filterTags);
+      Display.fillFilter(recipesFilteredWithTags);
+      Display.displayRecipes(recipesFilteredWithTags);
       Display.createTag(e.target.textContent, color);
+
     });
   });
 
@@ -56,12 +70,13 @@ function init() {
     Display.toggleTagsVisibility(element);
 
     const index = filterTags.indexOf(element);
-    index !== -1 ? filterTags.splice(index, 1) : '';
+    filterTags.splice(index, 1);
     
-    filteredRecipes = Search.filterWithTags(filteredRecipes,filterTags);
+     const refresh = Search.filterWithTags(filteredRecipes,filterTags);
+
+    Display.fillFilter(refresh);
+    Display.displayRecipes(refresh);
     
-    Display.fillFilter(filteredRecipes);
-    Display.displayRecipes(filteredRecipes);
     
   });
   

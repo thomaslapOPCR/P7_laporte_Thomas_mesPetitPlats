@@ -7,6 +7,7 @@
  */
 export function displayRecipes(recipes) {
   const container = document.querySelector('#recipes-container');
+
   return recipes.length === 0 ? sendMessage('Aucune recettes ne correspond a votre recherche ...')
     : container.innerHTML = recipes.map(({
       id, name, time, description, ingredients = [],
@@ -23,7 +24,7 @@ export function displayRecipes(recipes) {
                     </div>
                     <div class="main-content">
                         <ul>${
-  ingredients.map(({ ingredient, quantity = '', unit = '' }) => `<li>${ingredient} ${quantity} ${unit} </li>`).join('')}
+  ingredients.map(({ ingredient, quantity = '', unit = '' }) => `<li>${ingredient} <span>${quantity} ${unit} </span></li>`).join('')}
                         </ul>
                         <p class="desc-recipes">${description}</p>
                     </div>
@@ -55,7 +56,6 @@ export function fillFilter(recipes) {
         : key === 'ingredients' ? recipe[key].ingredient : recipe[key]))
       .filter((item) => item)
       .reduce((acc, item) => acc.concat(item), []);
-
     items = Array.from(new Set(items))
       .filter((item) => items.map((i) => i.toLowerCase().replace(/s$/, ''))
         .indexOf(item.toLowerCase().replace(/s$/, '')) === items.indexOf(item));
@@ -89,10 +89,7 @@ export function toggleTagsVisibility(elementValue) {
 }
 
 
-// export function displayRecipesAccordingToTags(filterTags) {
-//   const tagsFilterResult =  Search.filterWithTags(displayRecipesAccordingToFilter(),filterTags);
-//   return filterTags.length < 1 ? displayRecipes(recipes) : displayRecipes(tagsFilterResult);
-// }
+
 
 export default {
   displayRecipes, sendMessage, fillFilter, createTag, toggleTagsVisibility

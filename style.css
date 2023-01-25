@@ -306,3 +306,9 @@ header .search-tags .search-input-content .Utensils {
     overflow: hidden;
 }
 
+#recipes-container article .main-content ul li span {
+   font-size: 10px;
+    font-weight: bold;
+
+}
+
