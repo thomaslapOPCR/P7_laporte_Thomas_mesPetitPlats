@@ -1,7 +1,5 @@
-import * as Search from "./search.js";
-import { recipes } from "../../data/recipes.js";
 
-/**
+ /**
  * fonction qui permet l'affichage des recettes sur la page
  * retourne le Html de chaque recette grace a Map
  * @param recipes
@@ -33,18 +31,6 @@ export function displayRecipes(recipes) {
             </article>
         `).join('');
 }
-
-const convertUnits = (unit, quantity) => {
-  const units = {
-    grammes: 'g',
-    ml: 'ml',
-    'cuillères à soupe': 'cuillère à soupe',
-    'cuillères à café': 'cuillère à café',
-    gousses: 'gousse',
-    sachets: 'sachet',
-  };
-  return quantity === 1 ? units[unit].slice(0, -1) : quantity > 1 ? `${units[unit]}s` : units[unit];
-};
 
 /**
  * Permet d'afficher un message d'erreur
@@ -89,11 +75,11 @@ export function createTag(name, color) {
             <p>${name}</p>
             <i class="fal fa-times-circle close"></i>
         </div>`;
-  toggleVisibility(name);
+  toggleTagsVisibility(name);
   return tagline.innerHTML += tag;
 }
 
-export function toggleVisibility(elementValue) {
+export function toggleTagsVisibility(elementValue) {
   const liElements = document.querySelectorAll('.search-input-content div ul li');
   liElements.forEach(li => {
     if (li.textContent === elementValue) {
@@ -102,24 +88,12 @@ export function toggleVisibility(elementValue) {
   });
 }
 
-export function displayRecipesAccordingToFilter() {
-  const searchInput = document.querySelector('#searchInput');
-  let filteredRecipes;
-  filteredRecipes = Search.filterRecipes(recipes, searchInput.value);
-  fillFilter(filteredRecipes);
-  displayRecipes(filteredRecipes);
-  ////////////////////////////////////////////
-  document.title = filteredRecipes.length; // indicateur visuelle temporaire
-  //////////////////////////////////////////
-  return filteredRecipes
-}
 
-export function displayRecipesAccordingToTags(filterTags) {
-  const tagsFilterResult =  Search.filterWithTags(displayRecipesAccordingToFilter(),filterTags);
-  return filterTags.length < 1 ? displayRecipes(recipes) : displayRecipes(tagsFilterResult);
-}
+// export function displayRecipesAccordingToTags(filterTags) {
+//   const tagsFilterResult =  Search.filterWithTags(displayRecipesAccordingToFilter(),filterTags);
+//   return filterTags.length < 1 ? displayRecipes(recipes) : displayRecipes(tagsFilterResult);
+// }
 
 export default {
-  displayRecipes, sendMessage, fillFilter, createTag, toggleVisibility , displayRecipesAccordingToFilter ,
-  displayRecipesAccordingToTags
+  displayRecipes, sendMessage, fillFilter, createTag, toggleTagsVisibility
 };
