@@ -47,7 +47,6 @@ function init() {
 
   searchTag.forEach((el) => {
     el.addEventListener('click', (e) => {
-
       if (e.target.nodeName.toLowerCase() !== 'li') return;
       const color = e.target.parentElement.parentElement.dataset.color;
       filterTags.push(e.target.textContent.toLowerCase());
@@ -76,8 +75,6 @@ function init() {
 
     Display.fillFilter(refresh);
     Display.displayRecipes(refresh);
-    
-    
   });
   
 }

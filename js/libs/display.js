@@ -89,6 +89,11 @@ export function toggleTagsVisibility(elementValue) {
 }
 
 
+export function isInTagline (tag,li){
+
+}
+
+
 
 
 export default {
