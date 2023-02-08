@@ -26,4 +26,10 @@ export function filterWithTags(recipes, tags) {
     });
 }
 
-export default { filterRecipes, filterWithTags };
+export function filterIngredientsWithInput(list, value) {
+    return list.length<1? list :list.filter(item => {
+        return item.toLowerCase().includes(value.toLowerCase());
+    });
+}
+
+export default { filterRecipes, filterWithTags,filterIngredientsWithInput };

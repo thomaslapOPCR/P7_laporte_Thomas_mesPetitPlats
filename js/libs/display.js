@@ -43,30 +43,18 @@ export function sendMessage(message) {
   return container.innerHTML = message;
 }
 
-export function fillFilter(recipes) {
+export function fillFilter(recipes,tags) {
   const selectBoxIngredients = document.querySelector('#ingrédients ul');
   const selectBoxAppliance = document.querySelector('#appareils ul');
   const selectBoxUstensils = document.querySelector('#ustensiles ul');
 
-  const extractAndSortItems = (recipes, key) => {
-    let items = recipes
-      .map((recipe) => (Array.isArray(recipe[key])
-            && recipe[key]
-        ? recipe[key].map((ingredien) => (key === 'ingredients' ? ingredien.ingredient : ingredien))
-        : key === 'ingredients' ? recipe[key].ingredient : recipe[key]))
-      .filter((item) => item)
-      .reduce((acc, item) => acc.concat(item), []);
-    items = Array.from(new Set(items))
-      .filter((item) => items.map((i) => i.toLowerCase().replace(/s$/, ''))
-        .indexOf(item.toLowerCase().replace(/s$/, '')) === items.indexOf(item));
-
-    return items.sort((a, b) => a.localeCompare(b));
-  };
-
-  selectBoxIngredients.innerHTML = extractAndSortItems(recipes, 'ingredients').map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-  selectBoxAppliance.innerHTML = extractAndSortItems(recipes, 'appliance').map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-  selectBoxUstensils.innerHTML = extractAndSortItems(recipes, 'ustensils').map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+  selectBoxIngredients.innerHTML = getAllIngredients(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+  selectBoxAppliance.innerHTML = getAllAppliances(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+  selectBoxUstensils.innerHTML = getAllUstensils(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
 }
+
+
+
 
 export function createTag(name, color) {
   const tagline = document.querySelector('#tagsline');
@@ -75,27 +63,38 @@ export function createTag(name, color) {
             <p>${name}</p>
             <i class="fal fa-times-circle close"></i>
         </div>`;
-  toggleTagsVisibility(name);
+  // toggleTagsVisibility(name);
   return tagline.innerHTML += tag;
 }
 
-export function toggleTagsVisibility(elementValue) {
-  const liElements = document.querySelectorAll('.search-input-content div ul li');
-  liElements.forEach(li => {
-    if (li.textContent === elementValue) {
-      li.style.display = li.style.display === "none" ? "block" : "none";
-    }
-  });
-}
 
+export function getAllIngredients(recipes) {
+   return recipes
+       .map(recipe => recipe.ingredients.map(d => d.ingredient.toLowerCase()))
+       .reduce((prev, current) => [...prev, ...current.filter(e => !prev.includes(e.toLowerCase()))]);
+ }
 
-export function isInTagline (tag,li){
+ export function getAllAppliances(recipes) {
+   return recipes
+       .map(recipe => [recipe.appliance.toLowerCase()])
+       .reduce((prev, current) => (prev.includes(...current)) ? prev : [...prev, ...current]);
+ }
 
-}
+ export function getAllUstensils(recipes) {
+   return recipes
+       .map(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase()))
+       .reduce((prev, current) => [...prev, ...current.filter(e => !prev.includes(e.toLowerCase()))]);
+ }
 
 
 
 
 export default {
-  displayRecipes, sendMessage, fillFilter, createTag, toggleTagsVisibility
+  displayRecipes,
+  sendMessage,
+  fillFilter,
+  createTag,
+  getAllIngredients,
+  getAllAppliances,
+  getAllUstensils
 };
