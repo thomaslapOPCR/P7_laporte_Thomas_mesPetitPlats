@@ -7,7 +7,7 @@
  */
 export function displayRecipes(recipes) {
   const container = document.querySelector('#recipes-container');
-
+     fillFilter(recipes);
   return recipes.length === 0 ? sendMessage('Aucune recettes ne correspond a votre recherche ...')
     : container.innerHTML = recipes.map(({
       id, name, time, description, ingredients = [],
@@ -31,6 +31,7 @@ export function displayRecipes(recipes) {
                 </div>
             </article>
         `).join('');
+     
 }
 
 /**

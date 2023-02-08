@@ -1,5 +1,5 @@
 import * as Display from '../libs/display.js';
-// import * as Search from '../libs/search.js';
+import * as Search from '../libs/search.js';
 import {recipes} from "../../data/recipes.js";
 import {displayRecipes, sendMessage} from "../libs/display.js";
 
@@ -14,7 +14,7 @@ function init() {
   const searchTag = document.querySelectorAll('.search-input-content div ul');
   const tagsLine = document.querySelector('#tagsline');
   const searchInputContent = document.querySelector('.search-input-content');
-
+  let tagList = []
   function searchRecipes(searchInput,recipes) {
     const filteredRecipes = recipes.filter(recipe =>
         recipe.name.toLowerCase().includes(searchInput) ||
@@ -61,17 +61,22 @@ function init() {
     `;
 
       tagsLine.insertAdjacentHTML('beforeend', tag);
-      ul.removeChild(li);
+      // ul.removeChild(li);
       input.value = '';
-      searchRecipes(filter, li.textContent);
+      tagList.push(li.textContent)
+
+     Display.displayRecipes(Search.filterWithTags(filteredRecipes,tagList));
+      
     }
   });
 
   tagsLine.addEventListener('click', (event) => {
     if (event.target.classList.contains('close')) {
       const filter = event.target.parentNode.textContent.trim();
+      const index = tagList.indexOf(filter);
+      tagList.splice(index, 1);
       tagsLine.removeChild(event.target.parentNode);
-      searchRecipes(filter);
+      Display.displayRecipes(Search.filterWithTags(filteredRecipes,tagList));
     }
   });
 
