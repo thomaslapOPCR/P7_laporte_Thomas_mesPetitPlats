@@ -43,7 +43,7 @@ export function sendMessage(message) {
   return container.innerHTML = message;
 }
 
-export function fillFilter(recipes,tags) {
+export function fillFilter(recipes) {
   const selectBoxIngredients = document.querySelector('#ingrédients ul');
   const selectBoxAppliance = document.querySelector('#appareils ul');
   const selectBoxUstensils = document.querySelector('#ustensiles ul');

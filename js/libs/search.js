@@ -15,6 +15,7 @@ export function filterRecipes(recipes, value) {
 
 export function filterWithTags(recipes, tags) {
     if (!tags || tags.length === 0) return recipes;
+    console.log(tags)
     const lowerCaseTags = tags.map(tag => tag.toLowerCase().trim());
     
     return recipes.filter(recipe => {
