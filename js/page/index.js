@@ -1,7 +1,7 @@
 import * as Display from '../libs/display.js';
 import * as Search from '../libs/search.js';
 import {recipes} from "../../data/recipes.js";
-import {displayRecipes, sendMessage} from "../libs/display.js";
+
 
 
 
@@ -14,7 +14,9 @@ function init() {
   const searchTag = document.querySelectorAll('.search-input-content div ul');
   const tagsLine = document.querySelector('#tagsline');
   const searchInputContent = document.querySelector('.search-input-content');
-  let tagList = []
+  
+  let tagList = [];
+  
   function searchRecipes(searchInput,recipes) {
     const filteredRecipes = recipes.filter(recipe =>
         recipe.name.toLowerCase().includes(searchInput) ||
@@ -32,18 +34,14 @@ function init() {
     });
   });
   
+  Display.displayRecipes(recipes);
   
-  Display.displayRecipes(searchRecipes(searchInput.value.toLowerCase().trim(),recipes));
-  
-  searchInput.addEventListener('input',event=>
+  searchInput.addEventListener('input',() =>
   {
-    Display.displayRecipes(searchRecipes(searchInput.value.toLowerCase().trim(),recipes));
+    let filteredRecipes = searchRecipes(searchInput.value.toLowerCase().trim(),Search.filterWithTags(recipes,tagList));
+    Display.displayRecipes(filteredRecipes);
   })
-
-  let filteredRecipes = searchRecipes(searchInput.value.toLowerCase().trim(),recipes);
   
-  Display.fillFilter(filteredRecipes);
-
   
   searchInputContent.addEventListener('click', (event) => {
     if (event.target.tagName === 'LI') {
@@ -65,7 +63,7 @@ function init() {
       input.value = '';
       tagList.push(li.textContent)
 
-     Display.displayRecipes(Search.filterWithTags(filteredRecipes,tagList));
+     Display.displayRecipes(Search.filterWithTags(recipes,tagList));
       
     }
   });
@@ -76,19 +74,19 @@ function init() {
       const index = tagList.indexOf(filter);
       tagList.splice(index, 1);
       tagsLine.removeChild(event.target.parentNode);
-      Display.displayRecipes(Search.filterWithTags(filteredRecipes,tagList));
+      Display.displayRecipes(Search.filterWithTags(recipes,tagList));
     }
   });
 
 
-    tagsLine.querySelectorAll('.filters').forEach((tag) => {
-      const filterValue = tag.textContent.trim();
-      filteredRecipes = filteredRecipes.filter((recipe) =>
-          recipe[tag.parentNode.dataset.filter].includes(filterValue)
-      );
-    });
+    // tagsLine.querySelectorAll('.filters').forEach((tag) => {
+    //   const filterValue = tag.textContent.trim();
+    //   filteredRecipes = filteredRecipes.filter((recipe) =>
+    //       recipe[tag.parentNode.dataset.filter].includes(filterValue)
+    //   );
+    // });
 
-  Display.displayRecipes(searchRecipes(searchInput.value.toLowerCase().trim(),recipes));
+  // Display.displayRecipes(searchRecipes(searchInput.value.toLowerCase().trim(),Search.filterWithTags(filteredRecipes,tagList)));
 }
 
 
