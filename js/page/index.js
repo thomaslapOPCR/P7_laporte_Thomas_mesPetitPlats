@@ -1,6 +1,7 @@
 import * as Display from '../libs/display.js';
 import * as Search from '../libs/search.js';
 import { recipes } from "../../data/recipes.js";
+import {getAllAppliances, getAllIngredients, getAllUstensils} from "../libs/display.js";
 
 
 /**
@@ -77,18 +78,20 @@ function init() {
          case "Ingrédients": {
 
            const result = Search.filterIngredientsWithInput(Display.getAllIngredients(filteredRecipes),event.target.value);
-             console.log(result)
+            Display.fillFilter(result,Display.getAllAppliances(filteredRecipes),getAllUstensils(filteredRecipes));
            
            break;
          }
 
          case "Appareils": {
-           const list = Display.getAllAppliances(filteredRecipes);
+           const result = Search.filterIngredientsWithInput(Display.getAllAppliances(filteredRecipes),event.target.value);
+           Display.fillFilter(getAllIngredients(filteredRecipes),result,getAllUstensils(filteredRecipes));
            break;
          }
 
          case "ustensiles": {
-           const list = Display.getAllUstensils(filteredRecipes);
+           const result = Search.filterIngredientsWithInput(Display.getAllAppliances(filteredRecipes),event.target.value);
+           Display.fillFilter(getAllIngredients(filteredRecipes),getAllAppliances(filteredRecipes),result);
            break;
          }
          

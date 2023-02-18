@@ -8,8 +8,7 @@
  */
 export function displayRecipes(recipes,tagList) {
   const container = document.querySelector('#recipes-container');
-    console.log('DisplayRecipes',tagList)
-    fillFilter(recipes );
+    fillFilter(getAllIngredients(recipes),getAllAppliances(recipes),getAllUstensils(recipes));
   return container.innerHTML = recipes.map(({
       id, name, time, description, ingredients = [],
     }) => `
@@ -45,15 +44,26 @@ export function sendMessage(message) {
   return container.innerHTML = message;
 }
 
-export function fillFilter(recipes ) {
-  const selectBoxIngredients = document.querySelector('#ingrédients ul');
-  const selectBoxAppliance = document.querySelector('#appareils ul');
-  const selectBoxUstensils = document.querySelector('#ustensiles ul');
+// export function fillFilter(recipes ) {
+//   const selectBoxIngredients = document.querySelector('#ingrédients ul');
+//   const selectBoxAppliance = document.querySelector('#appareils ul');
+//   const selectBoxUstensils = document.querySelector('#ustensiles ul');
+//
+//   selectBoxIngredients.innerHTML = getAllIngredients(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+//   selectBoxAppliance.innerHTML = getAllAppliances(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+//   selectBoxUstensils.innerHTML = getAllUstensils(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+// }
 
-  selectBoxIngredients.innerHTML = getAllIngredients(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-  selectBoxAppliance.innerHTML = getAllAppliances(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-  selectBoxUstensils.innerHTML = getAllUstensils(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+export function fillFilter(AllI,AllA,ALLU ) {
+    const selectBoxIngredients = document.querySelector('#ingrédients ul');
+    const selectBoxAppliance = document.querySelector('#appareils ul');
+    const selectBoxUstensils = document.querySelector('#ustensiles ul');
+
+    selectBoxIngredients.innerHTML = AllI.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+    selectBoxAppliance.innerHTML = AllA.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+    selectBoxUstensils.innerHTML = ALLU.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
 }
+
 
 export function createTag(name, color) {
   const tagline = document.querySelector('#tagsline');
