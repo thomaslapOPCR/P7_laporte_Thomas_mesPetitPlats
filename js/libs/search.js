@@ -1,22 +1,13 @@
 
+
 export function searchRecipes(searchInput,recipes) {
-    const filteredRecipes = recipes.filter(recipe =>
-        recipe.name.toLowerCase().includes(searchInput) ||
-        recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchInput.toLowerCase())) ||
-        recipe.description.toLowerCase().includes(searchInput.toLowerCase())
-    );
-    return filteredRecipes
+    const filteredRecipes = searchInput.length < 3 ? recipes : recipes.filter((recipe) => recipe.name.toLowerCase().includes(searchInput.toLowerCase().trim())
+    || recipe.description.toLowerCase().includes(searchInput.toLowerCase().trim())
+    || recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(searchInput.toLowerCase().trim())))
+
+    return searchInput.length > 3 ?filteredRecipes : recipes
 };
-// 
-// 
-// function filterRecipes(recipes, value) {
-//
-//   return value.length < 3 ? recipes : recipes.filter((recipe) => (
-//     recipe.name.toLowerCase().includes(value.toLowerCase().trim())
-//             || recipe.description.toLowerCase().includes(value.toLowerCase().trim())
-//             || recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(value.toLowerCase().trim()))
-//   ));
-// }
+
 
 export function filterWithTags(recipes, tags) {
     

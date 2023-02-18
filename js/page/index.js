@@ -1,8 +1,6 @@
 import * as Display from '../libs/display.js';
 import * as Search from '../libs/search.js';
-import {recipes} from "../../data/recipes.js";
-
-
+import { recipes } from "../../data/recipes.js";
 
 
 /**
@@ -14,19 +12,9 @@ function init() {
   const searchTag = document.querySelectorAll('.search-input-content div ul');
   const tagsLine = document.querySelector('#tagsline');
   const searchInputContent = document.querySelector('.search-input-content');
+  const selectBoxInputSearch = document.querySelectorAll('.search-input-content div input');
   
   let tagList = [];
-  
-  function searchRecipes(searchInput,recipes) {
-    const filteredRecipes = recipes.filter(recipe =>
-        recipe.name.toLowerCase().includes(searchInput) ||
-        recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchInput.toLowerCase())) ||
-        recipe.description.toLowerCase().includes(searchInput.toLowerCase())
-    );
-    return filteredRecipes.length > 0
-        ? filteredRecipes
-        : Display.sendMessage('Aucune recettes ne correspond a votre recherche ...');
-  };
   
   searchInputContent.querySelectorAll('div').forEach((div) => {
     div.addEventListener('click', (e) => {
@@ -34,12 +22,13 @@ function init() {
     });
   });
   
-  Display.displayRecipes(recipes);
+  Display.displayRecipes(recipes,tagList);
   
   searchInput.addEventListener('input',() =>
   {
-    let filteredRecipes = searchRecipes(searchInput.value.toLowerCase().trim(),Search.filterWithTags(recipes,tagList));
-    Display.displayRecipes(filteredRecipes);
+    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+    if(filteredRecipes.length === 0) Display.sendMessage('Aucune correspondance...')
+    Display.displayRecipes(filteredRecipes,tagList);
   })
   
   
@@ -57,14 +46,14 @@ function init() {
         <i class="fal fa-times-circle close"></i>
       </div>
     `;
+      
 
       tagsLine.insertAdjacentHTML('beforeend', tag);
-      // ul.removeChild(li);
+      
       input.value = '';
       tagList.push(li.textContent)
 
-     Display.displayRecipes(Search.filterWithTags(recipes,tagList));
-      
+     Display.displayRecipes(Search.filterWithTags(recipes,tagList),tagList);
     }
   });
 
@@ -74,22 +63,44 @@ function init() {
       const index = tagList.indexOf(filter);
       tagList.splice(index, 1);
       tagsLine.removeChild(event.target.parentNode);
-      Display.displayRecipes(Search.filterWithTags(recipes,tagList));
+
+      let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+      Display.displayRecipes(filteredRecipes,tagList);
     }
   });
 
+    selectBoxInputSearch.forEach(el=>{
+      el.addEventListener('input',event =>{
+        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+       
+        switch (el.dataset.type) {
+         case "Ingrédients": {
 
-    // tagsLine.querySelectorAll('.filters').forEach((tag) => {
-    //   const filterValue = tag.textContent.trim();
-    //   filteredRecipes = filteredRecipes.filter((recipe) =>
-    //       recipe[tag.parentNode.dataset.filter].includes(filterValue)
-    //   );
-    // });
+           const result = Search.filterIngredientsWithInput(Display.getAllIngredients(filteredRecipes),event.target.value);
+             console.log(result)
+           
+           break;
+         }
 
-  // Display.displayRecipes(searchRecipes(searchInput.value.toLowerCase().trim(),Search.filterWithTags(filteredRecipes,tagList)));
+         case "Appareils": {
+           const list = Display.getAllAppliances(filteredRecipes);
+           break;
+         }
+
+         case "ustensiles": {
+           const list = Display.getAllUstensils(filteredRecipes);
+           break;
+         }
+         
+         default:{
+           
+           break;
+         }
+       }
+       
+      })
+    })
+
 }
-
-
-
 
 init();

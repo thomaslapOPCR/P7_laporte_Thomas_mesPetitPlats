@@ -1,15 +1,16 @@
 
- /**
+/**
  * fonction qui permet l'affichage des recettes sur la page
  * retourne le Html de chaque recette grace a Map
  * @param recipes
+ * @param tagList
  * @return HTMLElement
  */
-export function displayRecipes(recipes) {
+export function displayRecipes(recipes,tagList) {
   const container = document.querySelector('#recipes-container');
-     fillFilter(recipes);
-  return recipes.length === 0 ? sendMessage('Aucune recettes ne correspond a votre recherche ...')
-    : container.innerHTML = recipes.map(({
+    console.log('DisplayRecipes',tagList)
+    fillFilter(recipes );
+  return container.innerHTML = recipes.map(({
       id, name, time, description, ingredients = [],
     }) => `
             <article class="card" data-index="${id}">
@@ -44,7 +45,7 @@ export function sendMessage(message) {
   return container.innerHTML = message;
 }
 
-export function fillFilter(recipes) {
+export function fillFilter(recipes ) {
   const selectBoxIngredients = document.querySelector('#ingrédients ul');
   const selectBoxAppliance = document.querySelector('#appareils ul');
   const selectBoxUstensils = document.querySelector('#ustensiles ul');
@@ -53,9 +54,6 @@ export function fillFilter(recipes) {
   selectBoxAppliance.innerHTML = getAllAppliances(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
   selectBoxUstensils.innerHTML = getAllUstensils(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
 }
-
-
-
 
 export function createTag(name, color) {
   const tagline = document.querySelector('#tagsline');
@@ -69,23 +67,27 @@ export function createTag(name, color) {
 }
 
 
-export function getAllIngredients(recipes) {
-   return recipes
-       .map(recipe => recipe.ingredients.map(d => d.ingredient.toLowerCase()))
-       .reduce((prev, current) => [...prev, ...current.filter(e => !prev.includes(e.toLowerCase()))]);
+export function getAllIngredients(recipes,excludeIngredients) {
+    const allIngredients = recipes
+        .map((recipe) => recipe.ingredients.map((d) => d.ingredient.toLowerCase()))
+        .reduce((prev, current) => [...prev, ...current.filter((e) => !prev.includes(e.toLowerCase()))]);
+
+    return allIngredients.sort((a, b) => a.localeCompare(b));
  }
 
- export function getAllAppliances(recipes) {
-   return recipes
-       .map(recipe => [recipe.appliance.toLowerCase()])
-       .reduce((prev, current) => (prev.includes(...current)) ? prev : [...prev, ...current]);
- }
+export function getAllAppliances(recipes) {
+    return recipes
+        .map(recipe => recipe.appliance.toLowerCase())
+        .reduce((prev, current) => (prev.includes(current)) ? prev : [...prev, current], [])
+        .sort((a, b) => a.localeCompare(b));
+}
 
- export function getAllUstensils(recipes) {
-   return recipes
-       .map(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase()))
-       .reduce((prev, current) => [...prev, ...current.filter(e => !prev.includes(e.toLowerCase()))]);
- }
+export function getAllUstensils(recipes) {
+    return recipes
+        .map(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase()))
+        .reduce((prev, current) => [...prev, ...current.filter(e => !prev.includes(e))], [])
+        .sort((a, b) => a.localeCompare(b));
+}
 
 
 
