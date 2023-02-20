@@ -6,7 +6,7 @@
  * @param tagList
  * @return HTMLElement
  */
-export function displayRecipes(recipes,tagList) {
+export function displayRecipes(recipes) {
   const container = document.querySelector('#recipes-container');
     fillFilter(getAllIngredients(recipes),getAllAppliances(recipes),getAllUstensils(recipes));
   return container.innerHTML = recipes.map(({

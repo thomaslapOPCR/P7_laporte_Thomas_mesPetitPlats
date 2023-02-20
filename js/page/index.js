@@ -1,6 +1,6 @@
 import * as Display from '../libs/display.js';
-// import * as Search from '../libs/search.js';
-import * as Search from '../libs/searchV2.js';
+import * as Search from '../libs/search.js';
+// import * as Search from '../libs/searchV2.js';
 import { recipes } from "../../data/recipes.js";
 
 
@@ -14,7 +14,7 @@ function init() {
   const tagsLine = document.querySelector('#tagsline');
   const searchInputContent = document.querySelector('.search-input-content');
   const selectBoxInputSearch = document.querySelectorAll('.search-input-content div input');
- 
+
   let tagList = [];
   
   searchInputContent.querySelectorAll('div').forEach((div) => {
@@ -23,13 +23,13 @@ function init() {
     });
   });
   
-  Display.displayRecipes(recipes,tagList);
+  Display.displayRecipes(recipes);
 
   searchInput.addEventListener('input',() =>
   {
     let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
     if(filteredRecipes.length === 0) Display.sendMessage('Aucune correspondance...')
-    Display.displayRecipes(filteredRecipes,tagList);
+    Display.displayRecipes(filteredRecipes);
   })
   
   
@@ -45,8 +45,8 @@ function init() {
       
       input.value = '';
       tagList.push(li.textContent)
-      
-     Display.displayRecipes(Search.filterWithTags(recipes,tagList),tagList);
+      let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+     Display.displayRecipes(filteredRecipes);
       
       li.style.display = 'none';
     }
@@ -60,7 +60,7 @@ function init() {
       tagsLine.removeChild(event.target.parentNode);
  
       let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-      Display.displayRecipes(filteredRecipes,tagList);
+      Display.displayRecipes(filteredRecipes);
     }
   });
 
@@ -97,8 +97,6 @@ function init() {
        
       })
     })
-  
-
 }
 
 init();
