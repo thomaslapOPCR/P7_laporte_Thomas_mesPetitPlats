@@ -1,7 +1,7 @@
 import * as Display from '../libs/display.js';
-import * as Search from '../libs/search.js';
+// import * as Search from '../libs/search.js';
+import * as Search from '../libs/searchV2.js';
 import { recipes } from "../../data/recipes.js";
-import {getAllAppliances, getAllIngredients, getAllUstensils} from "../libs/display.js";
 
 
 /**
@@ -14,7 +14,7 @@ function init() {
   const tagsLine = document.querySelector('#tagsline');
   const searchInputContent = document.querySelector('.search-input-content');
   const selectBoxInputSearch = document.querySelectorAll('.search-input-content div input');
-  
+ 
   let tagList = [];
   
   searchInputContent.querySelectorAll('div').forEach((div) => {
@@ -24,7 +24,7 @@ function init() {
   });
   
   Display.displayRecipes(recipes,tagList);
-  
+
   searchInput.addEventListener('input',() =>
   {
     let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
@@ -40,21 +40,15 @@ function init() {
       const input = ul.previousElementSibling;
       const filter = ul.dataset.filter;
       const color = ul.parentNode.dataset.color;
-
-      const tag = `
-      <div class="filters" style="background-color:${color}">
-        <p>${li.textContent}</p>
-        <i class="fal fa-times-circle close"></i>
-      </div>
-    `;
       
-
-      tagsLine.insertAdjacentHTML('beforeend', tag);
+      Display.createTag(li.textContent,color);
       
       input.value = '';
       tagList.push(li.textContent)
-
+      
      Display.displayRecipes(Search.filterWithTags(recipes,tagList),tagList);
+      
+      li.style.display = 'none';
     }
   });
 
@@ -64,7 +58,7 @@ function init() {
       const index = tagList.indexOf(filter);
       tagList.splice(index, 1);
       tagsLine.removeChild(event.target.parentNode);
-
+ 
       let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
       Display.displayRecipes(filteredRecipes,tagList);
     }
@@ -78,20 +72,20 @@ function init() {
          case "Ingrédients": {
 
            const result = Search.filterIngredientsWithInput(Display.getAllIngredients(filteredRecipes),event.target.value);
-            Display.fillFilter(result,Display.getAllAppliances(filteredRecipes),getAllUstensils(filteredRecipes));
+            Display.fillFilter(result,Display.getAllAppliances(filteredRecipes),Display.getAllUstensils(filteredRecipes));
            
            break;
          }
 
          case "Appareils": {
            const result = Search.filterIngredientsWithInput(Display.getAllAppliances(filteredRecipes),event.target.value);
-           Display.fillFilter(getAllIngredients(filteredRecipes),result,getAllUstensils(filteredRecipes));
+           Display.fillFilter(Display.getAllIngredients(filteredRecipes),result,Display.getAllUstensils(filteredRecipes));
            break;
          }
 
          case "ustensiles": {
            const result = Search.filterIngredientsWithInput(Display.getAllAppliances(filteredRecipes),event.target.value);
-           Display.fillFilter(getAllIngredients(filteredRecipes),getAllAppliances(filteredRecipes),result);
+           Display.fillFilter(Display.getAllIngredients(filteredRecipes),Display.getAllAppliances(filteredRecipes),result);
            break;
          }
          
@@ -103,6 +97,7 @@ function init() {
        
       })
     })
+  
 
 }
 

@@ -54,14 +54,14 @@ export function sendMessage(message) {
 //   selectBoxUstensils.innerHTML = getAllUstensils(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
 // }
 
-export function fillFilter(AllI,AllA,ALLU ) {
+export function fillFilter(ingredient,applience,ustensils ) {
     const selectBoxIngredients = document.querySelector('#ingrédients ul');
     const selectBoxAppliance = document.querySelector('#appareils ul');
     const selectBoxUstensils = document.querySelector('#ustensiles ul');
 
-    selectBoxIngredients.innerHTML = AllI.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-    selectBoxAppliance.innerHTML = AllA.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-    selectBoxUstensils.innerHTML = ALLU.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+    selectBoxIngredients.innerHTML = ingredient.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+    selectBoxAppliance.innerHTML = applience.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+    selectBoxUstensils.innerHTML = ustensils.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
 }
 
 
@@ -73,7 +73,8 @@ export function createTag(name, color) {
             <i class="fal fa-times-circle close"></i>
         </div>`;
   // toggleTagsVisibility(name);
-  return tagline.innerHTML += tag;
+
+    return tagline.insertAdjacentHTML('beforeend', tag);
 }
 
 

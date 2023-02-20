@@ -1,4 +1,4 @@
-function searchRecipes(searchInput, recipes) {
+export function searchRecipes(searchInput, recipes) {
     const filteredRecipes = [];
 
     if (searchInput.length < 3) {
@@ -31,7 +31,7 @@ function searchRecipes(searchInput, recipes) {
     }
 }
 
-function filterWithTags(recipes, tags) {
+ export function filterWithTags(recipes, tags) {
     const filteredRecipes = [];
 
     if (tags.length === 0) {
@@ -67,7 +67,7 @@ function filterWithTags(recipes, tags) {
     return filteredRecipes;
 }
 
-function filterIngredientsWithInput(list, value) {
+export function filterIngredientsWithInput(list, value) {
     const filteredList = [];
 
     if (list.length < 1) {
@@ -85,3 +85,4 @@ function filterIngredientsWithInput(list, value) {
     return filteredList;
 }
 
+export default { searchRecipes, filterWithTags,filterIngredientsWithInput };
