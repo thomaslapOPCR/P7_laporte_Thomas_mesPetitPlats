@@ -4,17 +4,26 @@ import * as Search from '../libs/search.js';
 import { recipes } from "../../data/recipes.js";
 
 
+
+
 /**
  * fonction qui initialise les fonctions d'affichages est de tris
  */
 
 function init() {
   const searchInput = document.querySelector('#searchInput');
-  const searchTag = document.querySelectorAll('.search-input-content div ul');
+  const searchTag = document.querySelectorAll('.search-input-content div ul li');
   const tagsLine = document.querySelector('#tagsline');
   const searchInputContent = document.querySelector('.search-input-content');
   const selectBoxInputSearch = document.querySelectorAll('.search-input-content div input');
 
+  const selectBoxInputSearchI = document.querySelector('#ingrédients input');
+  const selectBoxInputSearchA = document.querySelector('#appareils input');
+  const selectBoxInputSearchU = document.querySelector('#ustensiles input');
+  
+  const selectBoxListIngredient = document.querySelector('#ingrédients ul');
+  const selectBoxListApplience = document.querySelector('#appareils ul');
+  const selectBoxListUstensil = document.querySelector('#ustensiles ul');
   let tagList = [];
   
   searchInputContent.querySelectorAll('div').forEach((div) => {
@@ -23,16 +32,60 @@ function init() {
     });
   });
   
-  Display.displayRecipes(recipes);
-
+  let firstFilter = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+  Display.displayRecipes(firstFilter);
+  SetAllFilter(firstFilter);
+  Display.setNumberTest(firstFilter)
+  
   searchInput.addEventListener('input',() =>
   {
-    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-    if(filteredRecipes.length === 0) Display.sendMessage('Aucune correspondance...')
-    Display.displayRecipes(filteredRecipes);
+      if(searchInput.value.length > 3) {
+        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+        if(filteredRecipes.length === 0) Display.sendMessage('Aucune correspondance...')
+        Display.displayRecipes(filteredRecipes);
+        Display.setNumberTest(filteredRecipes)
+        SetAllFilter(filteredRecipes);
+      } else {
+        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+        Display.displayRecipes(filteredRecipes);
+        SetAllFilter(filteredRecipes);
+        Display.setNumberTest(filteredRecipes)
+      }
+
+    
   })
-  
-  
+
+  selectBoxInputSearchI.addEventListener('input',(event)=>
+  {
+    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+    SetAllFilter(filteredRecipes)
+    Display.setNumberTest(filteredRecipes)
+    // Display.fillFilter(filteredRecipes,selectBoxInputSearchI.value);
+  })
+
+  selectBoxInputSearchA.addEventListener('input',()=>
+  {
+    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+    SetAllFilter(filteredRecipes)
+    Display.setNumberTest(filteredRecipes)
+    // Display.fillFilter(filteredRecipes,selectBoxInputSearchA.value);
+  })
+
+  selectBoxInputSearchU.addEventListener('input',()=>
+  {
+    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+    SetAllFilter(filteredRecipes)
+    Display.setNumberTest(filteredRecipes)
+    // Display.fillFilter(filteredRecipes,selectBoxInputSearchU.value);
+  })
+    
+   
+  function SetAllFilter(recipes) {
+    Display.fillFilter(recipes,selectBoxInputSearchI.value,selectBoxListIngredient);
+    Display.fillFilter(recipes,selectBoxInputSearchA.value,selectBoxListApplience);
+    Display.fillFilter(recipes,selectBoxInputSearchU.value,selectBoxListUstensil);
+  }
+
   searchInputContent.addEventListener('click', (event) => {
     if (event.target.tagName === 'LI') {
       const li = event.target;
@@ -40,15 +93,14 @@ function init() {
       const input = ul.previousElementSibling;
       const filter = ul.dataset.filter;
       const color = ul.parentNode.dataset.color;
-      
-      Display.createTag(li.textContent,color);
-      
       input.value = '';
       tagList.push(li.textContent)
+
       let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-     Display.displayRecipes(filteredRecipes);
-      
-      li.style.display = 'none';
+      Display.createTag(li.textContent,color);
+      Display.displayRecipes(filteredRecipes);
+      SetAllFilter(filteredRecipes)
+      Display.setNumberTest(filteredRecipes)
     }
   });
 
@@ -61,42 +113,14 @@ function init() {
  
       let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
       Display.displayRecipes(filteredRecipes);
+      Display.setNumberTest(filteredRecipes)
+
     }
   });
 
-    selectBoxInputSearch.forEach(el=>{
-      el.addEventListener('input',event =>{
-        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-       
-        switch (el.dataset.type) {
-         case "Ingrédients": {
+  
+  
 
-           const result = Search.filterIngredientsWithInput(Display.getAllIngredients(filteredRecipes),event.target.value);
-            Display.fillFilter(result,Display.getAllAppliances(filteredRecipes),Display.getAllUstensils(filteredRecipes));
-           
-           break;
-         }
-
-         case "Appareils": {
-           const result = Search.filterIngredientsWithInput(Display.getAllAppliances(filteredRecipes),event.target.value);
-           Display.fillFilter(Display.getAllIngredients(filteredRecipes),result,Display.getAllUstensils(filteredRecipes));
-           break;
-         }
-
-         case "ustensiles": {
-           const result = Search.filterIngredientsWithInput(Display.getAllAppliances(filteredRecipes),event.target.value);
-           Display.fillFilter(Display.getAllIngredients(filteredRecipes),Display.getAllAppliances(filteredRecipes),result);
-           break;
-         }
-         
-         default:{
-           
-           break;
-         }
-       }
-       
-      })
-    })
 }
 
 init();

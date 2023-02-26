@@ -312,3 +312,11 @@ header .search-tags .search-input-content .Utensils {
 
 }
 
+
+#number {
+    position: absolute;
+    color: #000;
+    top: 0;
+    left: 0;
+    font-size: 50px;
+}

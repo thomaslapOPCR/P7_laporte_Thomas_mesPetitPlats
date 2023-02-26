@@ -8,7 +8,7 @@
  */
 export function displayRecipes(recipes) {
   const container = document.querySelector('#recipes-container');
-    fillFilter(getAllIngredients(recipes),getAllAppliances(recipes),getAllUstensils(recipes));
+  
   return container.innerHTML = recipes.map(({
       id, name, time, description, ingredients = [],
     }) => `
@@ -44,26 +44,53 @@ export function sendMessage(message) {
   return container.innerHTML = message;
 }
 
-// export function fillFilter(recipes ) {
-//   const selectBoxIngredients = document.querySelector('#ingrédients ul');
-//   const selectBoxAppliance = document.querySelector('#appareils ul');
-//   const selectBoxUstensils = document.querySelector('#ustensiles ul');
-//
-//   selectBoxIngredients.innerHTML = getAllIngredients(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-//   selectBoxAppliance.innerHTML = getAllAppliances(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-//   selectBoxUstensils.innerHTML = getAllUstensils(recipes).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-// }
 
-export function fillFilter(ingredient,applience,ustensils ) {
-    const selectBoxIngredients = document.querySelector('#ingrédients ul');
-    const selectBoxAppliance = document.querySelector('#appareils ul');
-    const selectBoxUstensils = document.querySelector('#ustensiles ul');
+export function fillFilter(recipes, input , element) {
 
-    selectBoxIngredients.innerHTML = ingredient.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-    selectBoxAppliance.innerHTML = applience.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-    selectBoxUstensils.innerHTML = ustensils.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+    function check(recipes, input) {
+        if(input === '') {
+            return recipes;
+        }
+        const searchTerm = input.toLowerCase().trim();
+
+        const filteredRecipes = recipes.filter(recipe => {
+            return (
+                recipe.appliance.toLowerCase().includes(searchTerm) ||
+                recipe.ustensils.some(ustensil =>
+                    ustensil.toLowerCase().includes(searchTerm)
+                ) ||
+                recipe.ingredients.some(({ ingredient }) =>
+                    ingredient.toLowerCase().includes(searchTerm)
+                )
+            );
+        });
+        return filteredRecipes.map(({ name, ingredients, appliance, ustensils }) => {
+            const matchedIngredients = ingredients.filter(({ ingredient }) =>
+                ingredient.toLowerCase().includes(searchTerm)
+            );
+            return {
+                name,
+                ingredients: matchedIngredients,
+                appliance,
+                ustensils
+            };
+        });
+        
+    }
+
+    switch (element.dataset.filter) {
+        case"ingredients":return element.innerHTML = getAllIngredients(check(recipes,input)).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+            
+
+        case"appliance":return element.innerHTML = getAllAppliances(check(recipes,input)).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+
+        case"ustensils":return element.innerHTML = getAllUstensils(check(recipes,input)).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+           
+        default: return 'null';
+    }
+
+  
 }
-
 
 export function createTag(name, color) {
   const tagline = document.querySelector('#tagsline');
@@ -72,13 +99,16 @@ export function createTag(name, color) {
             <p>${name}</p>
             <i class="fal fa-times-circle close"></i>
         </div>`;
-  // toggleTagsVisibility(name);
 
-    return tagline.insertAdjacentHTML('beforeend', tag);
+     return tagline.insertAdjacentHTML('beforeend', tag);
 }
 
 
-export function getAllIngredients(recipes,excludeIngredients) {
+
+export function getAllIngredients(recipes) {
+    if(recipes.length === 0) {
+        return ['Aucune correspondance...'];
+    }
     const allIngredients = recipes
         .map((recipe) => recipe.ingredients.map((d) => d.ingredient.toLowerCase()))
         .reduce((prev, current) => [...prev, ...current.filter((e) => !prev.includes(e.toLowerCase()))]);
@@ -87,6 +117,9 @@ export function getAllIngredients(recipes,excludeIngredients) {
  }
 
 export function getAllAppliances(recipes) {
+    if(recipes.length === 0) {
+        return ['Aucune correspondance...'];
+    }
     return recipes
         .map(recipe => recipe.appliance.toLowerCase())
         .reduce((prev, current) => (prev.includes(current)) ? prev : [...prev, current], [])
@@ -94,6 +127,9 @@ export function getAllAppliances(recipes) {
 }
 
 export function getAllUstensils(recipes) {
+    if(recipes.length === 0) {
+        return ['Aucune correspondance...'];
+    }
     return recipes
         .map(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase()))
         .reduce((prev, current) => [...prev, ...current.filter(e => !prev.includes(e))], [])
@@ -101,14 +137,15 @@ export function getAllUstensils(recipes) {
 }
 
 
-
+export function setNumberTest(recipes) {
+    const doc = document.querySelector('#number');
+    return doc.innerHTML = recipes.length;
+}
 
 export default {
   displayRecipes,
   sendMessage,
   fillFilter,
   createTag,
-  getAllIngredients,
-  getAllAppliances,
-  getAllUstensils
+    setNumberTest
 };
