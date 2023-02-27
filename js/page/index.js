@@ -34,8 +34,8 @@ function init() {
   
   let firstFilter = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
   Display.displayRecipes(firstFilter);
-  SetAllFilter(firstFilter);
-  Display.setNumberTest(firstFilter)
+  SetAllFilter(firstFilter,tagList);
+  Display.setNumberTest(firstFilter);
   
   searchInput.addEventListener('input',() =>
   {
@@ -43,13 +43,13 @@ function init() {
         let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
         if(filteredRecipes.length === 0) Display.sendMessage('Aucune correspondance...')
         Display.displayRecipes(filteredRecipes);
-        Display.setNumberTest(filteredRecipes)
-        SetAllFilter(filteredRecipes);
+        Display.setNumberTest(filteredRecipes);
+        SetAllFilter(filteredRecipes,tagList);
       } else {
         let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
         Display.displayRecipes(filteredRecipes);
-        SetAllFilter(filteredRecipes);
-        Display.setNumberTest(filteredRecipes)
+        SetAllFilter(filteredRecipes,tagList);
+        Display.setNumberTest(filteredRecipes);
       }
 
     
@@ -58,32 +58,29 @@ function init() {
   selectBoxInputSearchI.addEventListener('input',(event)=>
   {
     let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-    SetAllFilter(filteredRecipes)
-    Display.setNumberTest(filteredRecipes)
-    // Display.fillFilter(filteredRecipes,selectBoxInputSearchI.value);
+    SetAllFilter(filteredRecipes,tagList);
+    Display.setNumberTest(filteredRecipes);
   })
 
   selectBoxInputSearchA.addEventListener('input',()=>
   {
     let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-    SetAllFilter(filteredRecipes)
-    Display.setNumberTest(filteredRecipes)
-    // Display.fillFilter(filteredRecipes,selectBoxInputSearchA.value);
+    SetAllFilter(filteredRecipes,tagList);
+    Display.setNumberTest(filteredRecipes);
   })
 
   selectBoxInputSearchU.addEventListener('input',()=>
   {
     let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-    SetAllFilter(filteredRecipes)
-    Display.setNumberTest(filteredRecipes)
-    // Display.fillFilter(filteredRecipes,selectBoxInputSearchU.value);
+    SetAllFilter(filteredRecipes,tagList);
+    Display.setNumberTest(filteredRecipes);
   })
     
    
-  function SetAllFilter(recipes) {
-    Display.fillFilter(recipes,selectBoxInputSearchI.value,selectBoxListIngredient);
-    Display.fillFilter(recipes,selectBoxInputSearchA.value,selectBoxListApplience);
-    Display.fillFilter(recipes,selectBoxInputSearchU.value,selectBoxListUstensil);
+  function SetAllFilter(recipes,tag) {
+    Display.fillFilter(recipes,selectBoxInputSearchI.value,selectBoxListIngredient,tag);
+    Display.fillFilter(recipes,selectBoxInputSearchA.value,selectBoxListApplience,tag);
+    Display.fillFilter(recipes,selectBoxInputSearchU.value,selectBoxListUstensil,tag);
   }
 
   searchInputContent.addEventListener('click', (event) => {
@@ -99,8 +96,8 @@ function init() {
       let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
       Display.createTag(li.textContent,color);
       Display.displayRecipes(filteredRecipes);
-      SetAllFilter(filteredRecipes)
-      Display.setNumberTest(filteredRecipes)
+      SetAllFilter(filteredRecipes,tagList);
+      Display.setNumberTest(filteredRecipes);
     }
   });
 
@@ -113,13 +110,11 @@ function init() {
  
       let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
       Display.displayRecipes(filteredRecipes);
-      Display.setNumberTest(filteredRecipes)
+      SetAllFilter(filteredRecipes,tagList);
+      Display.setNumberTest(filteredRecipes);
 
     }
   });
-
-  
-  
 
 }
 

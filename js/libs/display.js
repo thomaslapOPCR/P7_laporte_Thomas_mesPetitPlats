@@ -45,7 +45,7 @@ export function sendMessage(message) {
 }
 
 
-export function fillFilter(recipes, input , element) {
+export function fillFilter(recipes, input , element, tags) {
 
     function check(recipes, input) {
         if(input === '') {
@@ -77,16 +77,36 @@ export function fillFilter(recipes, input , element) {
         });
         
     }
-
     switch (element.dataset.filter) {
-        case"ingredients":return element.innerHTML = getAllIngredients(check(recipes,input)).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-            
+        case "ingredients":
+            const allIngredients = getAllIngredients(check(recipes, input));
+            const filteredIngredients = allIngredients.filter(item => {
+                return tags.every(tag => !item.toLowerCase().includes(tag.toLowerCase()));
+            });
+            const ingredientList = filteredIngredients.map(item => `<li>${item.toLowerCase()}</li>`).join('');
+            element.innerHTML = ingredientList;
+            break;
 
-        case"appliance":return element.innerHTML = getAllAppliances(check(recipes,input)).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
+        case "appliance":
+            const allAppliance = getAllAppliances(check(recipes, input));
+            const filteredApplience = allAppliance.filter(item => {
+                return tags.every(tag => !item.toLowerCase().includes(tag.toLowerCase()));
+            });
+            const applianceList = filteredApplience.map(item => `<li>${item.toLowerCase()}</li>`).join('');
+            element.innerHTML = applianceList;
+            break;
 
-        case"ustensils":return element.innerHTML = getAllUstensils(check(recipes,input)).map((item) => `<li>${item.toLowerCase()}</li>`).join('');
-           
-        default: return 'null';
+        case "ustensils":
+            const allUstensils = getAllUstensils(check(recipes, input));
+            const filteredUstensils = allUstensils.filter(item => {
+                return tags.every(tag => !item.toLowerCase().includes(tag.toLowerCase()));
+            });
+            const ustensilList = filteredUstensils.map(item => `<li>${item.toLowerCase()}</li>`).join('');
+            element.innerHTML = ustensilList;
+            break;
+
+        default:
+            element.innerHTML = '';
     }
 
   
