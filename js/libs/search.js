@@ -1,12 +1,14 @@
 
 
-export function searchRecipes(searchInput,recipes) {
+export function searchRecipes(searchInput,recipes,tagList) {
+
+    const recipesFilterWithTags = filterWithTags(recipes,tagList);
 
     if(searchInput === '') {
-        return recipes;
+        return recipesFilterWithTags;
     }
 
-    return  recipes.filter((recipe) => recipe.name.toLowerCase().includes(searchInput.toLowerCase().trim())
+    return  recipesFilterWithTags.filter((recipe) => recipe.name.toLowerCase().includes(searchInput.toLowerCase().trim())
     || recipe.description.toLowerCase().includes(searchInput.toLowerCase().trim())
     || recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(searchInput.toLowerCase().trim())))
 

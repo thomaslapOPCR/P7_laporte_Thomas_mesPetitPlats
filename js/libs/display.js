@@ -127,9 +127,7 @@ export function createTag(name, color) {
 
 
 export function getAllIngredients(recipes) {
-    if(recipes.length === 0) {
-        return ['Aucune correspondance...'];
-    }
+
     const allIngredients = recipes
         .map((recipe) => recipe.ingredients.map((d) => d.ingredient.toLowerCase()))
         .reduce((prev, current) => [...prev, ...current.filter((e) => !prev.includes(e.toLowerCase()))]);
@@ -138,9 +136,7 @@ export function getAllIngredients(recipes) {
  }
 
 export function getAllAppliances(recipes) {
-    if(recipes.length === 0) {
-        return ['Aucune correspondance...'];
-    }
+
     return recipes
         .map(recipe => recipe.appliance.toLowerCase())
         .reduce((prev, current) => (prev.includes(current)) ? prev : [...prev, current], [])
@@ -148,9 +144,7 @@ export function getAllAppliances(recipes) {
 }
 
 export function getAllUstensils(recipes) {
-    if(recipes.length === 0) {
-        return ['Aucune correspondance...'];
-    }
+
     return recipes
         .map(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase()))
         .reduce((prev, current) => [...prev, ...current.filter(e => !prev.includes(e))], [])
