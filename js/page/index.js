@@ -1,6 +1,5 @@
 import * as Display from '../libs/display.js';
-// import * as Search from '../libs/search.js';
-import * as Search from '../libs/searchV2.js';
+import * as Search from '../libs/search.js';
 import { recipes } from "../../data/recipes.js";
 
 
@@ -31,25 +30,15 @@ function init() {
       e.target.classList.toggle('active');
     });
   });
-  
-  let firstFilter = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-  Display.displayRecipes(firstFilter);
-  SetAllFilter(firstFilter,tagList);
-  Display.setNumberTest(firstFilter);
+
+  displayAndFilter();
   
   searchInput.addEventListener('input',() =>
   {
       if(searchInput.value.length > 3) {
-        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-
-        Display.displayRecipes(filteredRecipes);
-        Display.setNumberTest(filteredRecipes);
-        SetAllFilter(filteredRecipes,tagList);
+        displayAndFilter();
       } else {
-        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-        Display.displayRecipes(filteredRecipes);
-        SetAllFilter(filteredRecipes,tagList);
-        Display.setNumberTest(filteredRecipes);
+        displayAndFilter();
       }
 
     
@@ -57,23 +46,17 @@ function init() {
 
   selectBoxInputSearchI.addEventListener('input',(event)=>
   {
-    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-    SetAllFilter(filteredRecipes,tagList);
-    Display.setNumberTest(filteredRecipes);
+    displayAndFilter();
   })
 
   selectBoxInputSearchA.addEventListener('input',()=>
   {
-    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-    SetAllFilter(filteredRecipes,tagList);
-    Display.setNumberTest(filteredRecipes);
+    displayAndFilter();
   })
 
   selectBoxInputSearchU.addEventListener('input',()=>
   {
-    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-    SetAllFilter(filteredRecipes,tagList);
-    Display.setNumberTest(filteredRecipes);
+    displayAndFilter();
   })
     
    
@@ -92,12 +75,9 @@ function init() {
       const color = ul.parentNode.dataset.color;
       input.value = '';
       tagList.push(li.textContent)
-
-      let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+      
       Display.createTag(li.textContent,color);
-      Display.displayRecipes(filteredRecipes);
-      SetAllFilter(filteredRecipes,tagList);
-      Display.setNumberTest(filteredRecipes);
+      displayAndFilter();
     }
   });
 
@@ -107,14 +87,17 @@ function init() {
       const index = tagList.indexOf(filter);
       tagList.splice(index, 1);
       tagsLine.removeChild(event.target.parentNode);
- 
-      let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-      Display.displayRecipes(filteredRecipes);
-      SetAllFilter(filteredRecipes,tagList);
-      Display.setNumberTest(filteredRecipes);
+
+      displayAndFilter();
 
     }
   });
+  function displayAndFilter() {
+    let filteredRecipes = Search.searchRecipes(searchInput.value,recipes,tagList);
+    Display.displayRecipes(filteredRecipes);
+    SetAllFilter(filteredRecipes,tagList);
+    Display.setNumberTest(filteredRecipes);
+  }
 
 }
 
