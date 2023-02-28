@@ -1,6 +1,10 @@
 import * as Display from '../libs/display.js';
-import * as Search from '../libs/search.js';
+// import * as Search from '../libs/search.js';
+import * as Search from '../libs/searchV2.js';
 import { recipes } from "../../data/recipes.js";
+
+
+
 
 /**
  * fonction qui initialise les fonctions d'affichages est de tris
@@ -8,9 +12,10 @@ import { recipes } from "../../data/recipes.js";
 
 function init() {
   const searchInput = document.querySelector('#searchInput');
+  const searchTag = document.querySelectorAll('.search-input-content div ul li');
   const tagsLine = document.querySelector('#tagsline');
   const searchInputContent = document.querySelector('.search-input-content');
-
+  const selectBoxInputSearch = document.querySelectorAll('.search-input-content div input');
 
   const selectBoxInputSearchI = document.querySelector('#ingrédients input');
   const selectBoxInputSearchA = document.querySelector('#appareils input');
@@ -19,7 +24,6 @@ function init() {
   const selectBoxListIngredient = document.querySelector('#ingrédients ul');
   const selectBoxListApplience = document.querySelector('#appareils ul');
   const selectBoxListUstensil = document.querySelector('#ustensiles ul');
-  
   let tagList = [];
   
   searchInputContent.querySelectorAll('div').forEach((div) => {
@@ -28,25 +32,56 @@ function init() {
     });
   });
   
-  displayAndFilter();
-
+  let firstFilter = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+  Display.displayRecipes(firstFilter);
+  SetAllFilter(firstFilter,tagList);
+  Display.setNumberTest(firstFilter);
   
   searchInput.addEventListener('input',() =>
   {
       if(searchInput.value.length > 3) {
-        displayAndFilter();
+        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+
+        Display.displayRecipes(filteredRecipes);
+        Display.setNumberTest(filteredRecipes);
+        SetAllFilter(filteredRecipes,tagList);
       } else {
-        displayAndFilter();
+        let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+        Display.displayRecipes(filteredRecipes);
+        SetAllFilter(filteredRecipes,tagList);
+        Display.setNumberTest(filteredRecipes);
       }
-      
+
+    
   })
 
-  selectBoxInputSearchI.addEventListener('input',()=> displayAndFilter());
+  selectBoxInputSearchI.addEventListener('input',(event)=>
+  {
+    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+    SetAllFilter(filteredRecipes,tagList);
+    Display.setNumberTest(filteredRecipes);
+  })
 
-  selectBoxInputSearchA.addEventListener('input',()=> displayAndFilter());
+  selectBoxInputSearchA.addEventListener('input',()=>
+  {
+    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+    SetAllFilter(filteredRecipes,tagList);
+    Display.setNumberTest(filteredRecipes);
+  })
 
-  selectBoxInputSearchU.addEventListener('input',()=> displayAndFilter());
-  
+  selectBoxInputSearchU.addEventListener('input',()=>
+  {
+    let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+    SetAllFilter(filteredRecipes,tagList);
+    Display.setNumberTest(filteredRecipes);
+  })
+    
+   
+  function SetAllFilter(recipes,tag) {
+    Display.fillFilter(recipes,selectBoxInputSearchI.value,selectBoxListIngredient,tag);
+    Display.fillFilter(recipes,selectBoxInputSearchA.value,selectBoxListApplience,tag);
+    Display.fillFilter(recipes,selectBoxInputSearchU.value,selectBoxListUstensil,tag);
+  }
 
   searchInputContent.addEventListener('click', (event) => {
     if (event.target.tagName === 'LI') {
@@ -57,10 +92,12 @@ function init() {
       const color = ul.parentNode.dataset.color;
       input.value = '';
       tagList.push(li.textContent)
+
+      let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
       Display.createTag(li.textContent,color);
-
-      displayAndFilter();
-
+      Display.displayRecipes(filteredRecipes);
+      SetAllFilter(filteredRecipes,tagList);
+      Display.setNumberTest(filteredRecipes);
     }
   });
 
@@ -70,24 +107,14 @@ function init() {
       const index = tagList.indexOf(filter);
       tagList.splice(index, 1);
       tagsLine.removeChild(event.target.parentNode);
-      
-      displayAndFilter()
+ 
+      let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
+      Display.displayRecipes(filteredRecipes);
+      SetAllFilter(filteredRecipes,tagList);
+      Display.setNumberTest(filteredRecipes);
 
     }
   });
-
-  function SetAllFilter(recipes,tag) {
-    Display.fillFilter(recipes,selectBoxInputSearchI.value,selectBoxListIngredient,tag);
-    Display.fillFilter(recipes,selectBoxInputSearchA.value,selectBoxListApplience,tag);
-    Display.fillFilter(recipes,selectBoxInputSearchU.value,selectBoxListUstensil,tag);
-  }
-  
-  function displayAndFilter() {
-    let filteredRecipes = Search.searchRecipes(searchInput.value,recipes,tagList);
-    Display.displayRecipes(filteredRecipes);
-    SetAllFilter(filteredRecipes,tagList);
-    Display.setNumberTest(filteredRecipes);
-  }
 
 }
 
