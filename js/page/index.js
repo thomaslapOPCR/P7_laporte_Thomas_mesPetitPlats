@@ -1,6 +1,6 @@
 import * as Display from '../libs/display.js';
-// import * as Search from '../libs/search.js';
-import * as Search from '../libs/searchV2.js';
+import * as Search from '../libs/search.js';
+//import * as Search from '../libs/searchV2.js';
 import { recipes } from "../../data/recipes.js";
 
 
