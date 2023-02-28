@@ -1,88 +1,94 @@
-export function searchRecipes(searchInput, recipes) {
-    const filteredRecipes = [];
+function searchRecipes(searchInput, recipes) {
+    if (searchInput === '') {
+        return recipes;
+    }
 
-    if (searchInput.length < 3) {
-        filteredRecipes.push(...recipes);
-    } else {
-        for (let i = 0; i < recipes.length; i++) {
-            const recipe = recipes[i];
-            const name = recipe.name.toLowerCase();
-            const description = recipe.description.toLowerCase();
-            const ingredients = recipe.ingredients;
+    var results = [];
 
-            if (name.includes(searchInput.toLowerCase().trim()) || description.includes(searchInput.toLowerCase().trim())) {
-                filteredRecipes.push(recipe);
-            } else {
-                for (let j = 0; j < ingredients.length; j++) {
-                    const ingredient = ingredients[j].ingredient.toLowerCase();
-                    if (ingredient.includes(searchInput.toLowerCase().trim())) {
-                        filteredRecipes.push(recipe);
-                        break;
-                    }
-                }
+    for (var i = 0; i < recipes.length; i++) {
+        var recipe = recipes[i];
+        var name = recipe.name.toLowerCase().trim();
+        var description = recipe.description.toLowerCase().trim();
+        var hasMatch = false;
+
+        if (name.indexOf(searchInput.toLowerCase().trim()) !== -1 ||
+            description.indexOf(searchInput.toLowerCase().trim()) !== -1) {
+            hasMatch = true;
+        }
+
+        var ingredients = recipe.ingredients || [];
+
+        for (var j = 0; j < ingredients.length; j++) {
+            var ingredient = ingredients[j].ingredient.toLowerCase().trim();
+
+            if (ingredient.indexOf(searchInput.toLowerCase().trim()) !== -1) {
+                hasMatch = true;
+                break;
             }
+        }
+
+        if (hasMatch) {
+            results.push(recipe);
         }
     }
 
-    if (searchInput.length > 3) {
-        return filteredRecipes;
-    } else {
-        return recipes;
-    }
+    return results;
 }
 
- export function filterWithTags(recipes, tags) {
-    const filteredRecipes = [];
 
+function filterWithTags(recipes, tags) {
     if (tags.length === 0) {
-        filteredRecipes.push(...recipes);
-    } else {
-        for (let i = 0; i < recipes.length; i++) {
-            const recipe = recipes[i];
-            const appliance = recipe.appliance;
-            const ingredients = recipe.ingredients;
-            const ustensils = recipe.ustensils;
+        return recipes;
+    }
 
-            let match = true;
+    var results = [];
 
-            for (let j = 0; j < tags.length; j++) {
-                const tag = tags[j].toLowerCase().trim();
+    for (var i = 0; i < recipes.length; i++) {
+        var recipe = recipes[i];
+        var appliance = recipe.appliance ? recipe.appliance.toLowerCase().trim() : '';
+        var ingredients = recipe.ingredients || [];
+        var ustensils = recipe.ustensils || [];
+        var hasTags = true;
 
-                if ((appliance && appliance.toLowerCase().includes(tag)) ||
-                    (ingredients && ingredients.some(ingredient => ingredient.ingredient && ingredient.ingredient.toLowerCase().includes(tag))) ||
-                    (ustensils && ustensils.some(ustensil => ustensil.toLowerCase().includes(tag)))) {
-                    continue;
-                } else {
-                    match = false;
+        for (var j = 0; j < tags.length; j++) {
+            var tag = tags[j].toLowerCase().trim();
+            var hasTag = false;
+
+            if (appliance.indexOf(tag) !== -1) {
+                hasTag = true;
+            }
+
+            for (var k = 0; k < ingredients.length; k++) {
+                var ingredient = ingredients[k].ingredient.toLowerCase().trim();
+
+                if (ingredient.indexOf(tag) !== -1) {
+                    hasTag = true;
                     break;
                 }
             }
 
-            if (match) {
-                filteredRecipes.push(recipe);
+            for (var l = 0; l < ustensils.length; l++) {
+                var ustensil = ustensils[l].toLowerCase().trim();
+
+                if (ustensil.indexOf(tag) !== -1) {
+                    hasTag = true;
+                    break;
+                }
             }
+
+            if (!hasTag) {
+                hasTags = false;
+                break;
+            }
+        }
+
+        if (hasTags) {
+            results.push(recipe);
         }
     }
 
-    return filteredRecipes;
+    return results;
 }
 
-export function filterIngredientsWithInput(list, value) {
-    const filteredList = [];
 
-    if (list.length < 1) {
-        filteredList.push(...list);
-    } else {
-        for (let i = 0; i < list.length; i++) {
-            const item = list[i];
-
-            if (item.toLowerCase().includes(value.toLowerCase())) {
-                filteredList.push(item);
-            }
-        }
-    }
-
-    return filteredList;
-}
-
-export default { searchRecipes, filterWithTags,filterIngredientsWithInput };
+export { searchRecipes, filterWithTags };

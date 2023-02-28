@@ -1,6 +1,6 @@
 import * as Display from '../libs/display.js';
-import * as Search from '../libs/search.js';
-// import * as Search from '../libs/searchV2.js';
+// import * as Search from '../libs/search.js';
+import * as Search from '../libs/searchV2.js';
 import { recipes } from "../../data/recipes.js";
 
 
@@ -41,7 +41,7 @@ function init() {
   {
       if(searchInput.value.length > 3) {
         let filteredRecipes = Search.searchRecipes(searchInput.value,Search.filterWithTags(recipes,tagList));
-        if(filteredRecipes.length === 0) Display.sendMessage('Aucune correspondance...')
+
         Display.displayRecipes(filteredRecipes);
         Display.setNumberTest(filteredRecipes);
         SetAllFilter(filteredRecipes,tagList);

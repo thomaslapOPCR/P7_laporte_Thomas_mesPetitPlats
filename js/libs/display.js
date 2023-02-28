@@ -8,6 +8,7 @@
  */
 export function displayRecipes(recipes) {
   const container = document.querySelector('#recipes-container');
+  if(recipes.length === 0) return sendMessage('Aucune correspondance...');
   
   return container.innerHTML = recipes.map(({
       id, name, time, description, ingredients = [],
