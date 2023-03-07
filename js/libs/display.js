@@ -8,7 +8,7 @@
  */
 export function displayRecipes(recipes) {
   const container = document.querySelector('#recipes-container');
-  if(recipes.length === 0) return sendMessage('Aucune correspondance...');
+  if(recipes.length === 0) return sendMessage('Aucune recette ne correspond à votre critère... vous pouvez chercher "tarte aux pommes", "poisson" etc. ');
   
   return container.innerHTML = recipes.map(({
       id, name, time, description, ingredients = [],
