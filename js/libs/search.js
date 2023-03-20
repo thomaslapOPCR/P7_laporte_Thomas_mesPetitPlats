@@ -1,4 +1,3 @@
-
 export function searchRecipes(searchInput, recipes, tagList) {
     const recipesFilterWithTags = filterWithTags(recipes, tagList);
     const results = [];
@@ -37,7 +36,7 @@ export function filterWithTags(recipes, tags) {
         return recipes;
     }
 
-    const lowerCaseTags = tags.map(tag => tag.toLowerCase().trim());
+    const lowerCaseTags = tags.map((tag) => tag.toLowerCase().trim());
     const results = [];
 
     for (let i = 0; i < recipes.length; i++) {
