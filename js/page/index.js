@@ -22,11 +22,14 @@ function init() {
   const selectBoxListUstensil = document.querySelector('#ustensiles ul');
   const tagList = [];
 
-  searchInputContent.querySelectorAll('div').forEach((div) => {
-    div.addEventListener('click', (e) => {
-      e.target.classList.toggle('active');
+  const divsAndElements = document.querySelectorAll('.Composante, .Devices, .Utensils, input, ul, i');
+
+  divsAndElements.forEach(element => {
+    element.addEventListener('click', () => {
+      element.classList.toggle('active');
     });
   });
+
 
   display();
 
