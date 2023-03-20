@@ -16,11 +16,11 @@ export function displayRecipes(recipes) {
                 <div class="img"></div>
                 <div class="desc">
                     <div class="header">
-                        <p class="title">${name}</p>
-                        <span>
+                        <h5 class="title">${name}</h5>
+                        <div>
                             <i class="fal fa-clock"></i>
                             <p class="time">${time} mins</p>
-                        </span>
+                        </div>
                     </div>
                     <div class="main-content">
                         <ul>${
@@ -67,10 +67,8 @@ export function fillFilter(recipes, input, element, tags) {
             };
         });
     }
-
     switch (element.dataset.filter) {
         case 'ingredients':
-
             const allIngredients = getAllIngredients(check(recipes, input));
             const filteredIngredients = allIngredients.filter((item) => tags.every((tag) => !item.toLowerCase().includes(tag.toLowerCase())));
             const ingredientList = filteredIngredients.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
@@ -78,7 +76,6 @@ export function fillFilter(recipes, input, element, tags) {
             break;
 
         case 'appliance':
-
             const allAppliance = getAllAppliances(check(recipes, input));
             const filteredApplience = allAppliance.filter((item) => tags.every((tag) => !item.toLowerCase().includes(tag.toLowerCase())));
             const applianceList = filteredApplience.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
@@ -86,15 +83,13 @@ export function fillFilter(recipes, input, element, tags) {
             break;
 
         case 'ustensils':
-
             const allUstensils = getAllUstensils(check(recipes, input));
             const filteredUstensils = allUstensils.filter((item) => tags.every((tag) => !item.toLowerCase().includes(tag.toLowerCase())));
             const ustensilList = filteredUstensils.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
             element.innerHTML = ustensilList;
             break;
 
-        default:
-            element.innerHTML = '';
+        default: element.innerHTML = '';
     }
 }
 
@@ -105,25 +100,21 @@ export function createTag(name, color) {
             <p>${name}</p>
             <i class="fal fa-times-circle close"></i>
         </div>`;
-
      return tagline.insertAdjacentHTML('beforeend', tag);
 }
 
 export function getAllIngredients(recipes) {
-    if (recipes.length === 0) {
-        return ['Aucune correspondance...'];
-    }
     const allIngredients = recipes
         .map((recipe) => recipe.ingredients.map((d) => d.ingredient.toLowerCase()))
-        .reduce((prev, current) => [...prev, ...current.filter((e) => !prev.includes(e.toLowerCase()))]);
+        .reduce(
+            (prev, current) => [...prev, ...current.filter((e) => !prev.includes(e.toLowerCase()))],
+            []
+        );
 
     return allIngredients.sort((a, b) => a.localeCompare(b));
- }
+}
 
 export function getAllAppliances(recipes) {
-    if (recipes.length === 0) {
-        return ['Aucune correspondance...'];
-    }
     return recipes
         .map((recipe) => recipe.appliance.toLowerCase())
         .reduce((prev, current) => ((prev.includes(current)) ? prev : [...prev, current]), [])
@@ -131,9 +122,6 @@ export function getAllAppliances(recipes) {
 }
 
 export function getAllUstensils(recipes) {
-    if (recipes.length === 0) {
-        return ['Aucune correspondance...'];
-    }
     return recipes
         .map((recipe) => recipe.ustensils.map((ustensil) => ustensil.toLowerCase()))
         .reduce((prev, current) => [...prev, ...current.filter((e) => !prev.includes(e))], [])
@@ -150,5 +138,4 @@ export default {
   sendMessage,
   fillFilter,
   createTag,
-    setNumberTest,
 };
