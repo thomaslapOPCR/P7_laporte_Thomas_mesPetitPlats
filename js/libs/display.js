@@ -51,19 +51,21 @@ export function fillFilter(recipes, input, element, tags) {
         const searchTerm = input.toLowerCase().trim();
 
         const filteredRecipes = recipes.filter((recipe) => (
-                recipe.appliance.toLowerCase().includes(searchTerm)
-                || recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(searchTerm))
-                || recipe.ingredients.some(({ ingredient }) => ingredient.toLowerCase().includes(searchTerm))
-            ));
+            recipe.appliance.toLowerCase().includes(searchTerm)
+            || recipe.ustensils.some((ustensil) => ustensil.toLowerCase().includes(searchTerm))
+            || recipe.ingredients.some(({ ingredient }) => ingredient.toLowerCase().includes(searchTerm))
+        ));
         return filteredRecipes.map(({
- name, ingredients, appliance, ustensils,
-}) => {
+                                        name, ingredients, appliance, ustensils,
+                                    }) => {
+
             const matchedIngredients = ingredients.filter(({ ingredient }) => ingredient.toLowerCase().includes(searchTerm));
+            const matchedUstensils = ustensils.filter((ustensil) => ustensil.toLowerCase().includes(searchTerm));
             return {
                 name,
                 ingredients: matchedIngredients,
                 appliance,
-                ustensils,
+                ustensils: matchedUstensils,
             };
         });
     }
@@ -84,6 +86,7 @@ export function fillFilter(recipes, input, element, tags) {
 
         case 'ustensils':
             const allUstensils = getAllUstensils(check(recipes, input));
+            console.log(allUstensils)
             const filteredUstensils = allUstensils.filter((item) => tags.every((tag) => !item.toLowerCase().includes(tag.toLowerCase())));
             const ustensilList = filteredUstensils.map((item) => `<li>${item.toLowerCase()}</li>`).join('');
             element.innerHTML = ustensilList;
